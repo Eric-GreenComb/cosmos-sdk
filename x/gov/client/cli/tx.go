@@ -159,7 +159,7 @@ func parseSubmitProposalFlags() (*proposal, error) {
 func GetCmdDeposit(cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "deposit",
-		Short: "deposit tokens for activing proposal",
+		Short: "Deposit tokens for activing proposal",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			txBldr := authtxb.NewTxBuilderFromCLI().WithCodec(cdc)
 			cliCtx := context.NewCLIContext().
@@ -205,7 +205,7 @@ func GetCmdDeposit(cdc *codec.Codec) *cobra.Command {
 func GetCmdVote(cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "vote",
-		Short: "vote for an active proposal, options: Yes/No/NoWithVeto/Abstain",
+		Short: "Vote for an active proposal, options: Yes/No/NoWithVeto/Abstain",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			txBldr := authtxb.NewTxBuilderFromCLI().WithCodec(cdc)
 			cliCtx := context.NewCLIContext().
@@ -255,8 +255,8 @@ func GetCmdVote(cdc *codec.Codec) *cobra.Command {
 // GetCmdQueryProposal implements the query proposal command.
 func GetCmdQueryProposal(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "query-proposal",
-		Short: "query proposal details",
+		Use:   "proposal",
+		Short: "Query details of a single proposal",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			proposalID := viper.GetInt64(flagProposalID)
@@ -289,8 +289,8 @@ func GetCmdQueryProposal(queryRoute string, cdc *codec.Codec) *cobra.Command {
 // GetCmdQueryProposals implements a query proposals command.
 func GetCmdQueryProposals(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "query-proposals",
-		Short: "query proposals with optional filters",
+		Use:   "proposals",
+		Short: "Query proposals with optional filters",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			bechDepositerAddr := viper.GetString(flagDepositer)
 			bechVoterAddr := viper.GetString(flagVoter)
@@ -368,8 +368,8 @@ func GetCmdQueryProposals(queryRoute string, cdc *codec.Codec) *cobra.Command {
 // GetCmdQueryVote implements the query proposal vote command.
 func GetCmdQueryVote(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "query-vote",
-		Short: "query vote",
+		Use:   "vote",
+		Short: "Query details of a single vote",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			proposalID := viper.GetInt64(flagProposalID)
@@ -407,8 +407,8 @@ func GetCmdQueryVote(queryRoute string, cdc *codec.Codec) *cobra.Command {
 // GetCmdQueryVotes implements the command to query for proposal votes.
 func GetCmdQueryVotes(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "query-votes",
-		Short: "query votes on a proposal",
+		Use:   "votes",
+		Short: "Query votes on a proposal",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			proposalID := viper.GetInt64(flagProposalID)
@@ -440,8 +440,8 @@ func GetCmdQueryVotes(queryRoute string, cdc *codec.Codec) *cobra.Command {
 // GetCmdQueryDeposit implements the query proposal deposit command.
 func GetCmdQueryDeposit(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "query-deposit",
-		Short: "query deposit",
+		Use:   "deposit",
+		Short: "Query details of a deposit",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			proposalID := viper.GetInt64(flagProposalID)
@@ -479,8 +479,8 @@ func GetCmdQueryDeposit(queryRoute string, cdc *codec.Codec) *cobra.Command {
 // GetCmdQueryDeposits implements the command to query for proposal deposits.
 func GetCmdQueryDeposits(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "query-deposits",
-		Short: "query deposits on a proposal",
+		Use:   "deposits",
+		Short: "Query deposits on a proposal",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			proposalID := viper.GetInt64(flagProposalID)
@@ -511,8 +511,8 @@ func GetCmdQueryDeposits(queryRoute string, cdc *codec.Codec) *cobra.Command {
 // GetCmdQueryDeposits implements the command to query for proposal deposits.
 func GetCmdQueryTally(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "query-tally",
-		Short: "get the tally of a proposal vote",
+		Use:   "tally",
+		Short: "Get the tally of a proposal vote",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			proposalID := viper.GetInt64(flagProposalID)
