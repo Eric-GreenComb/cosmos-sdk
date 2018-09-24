@@ -18,6 +18,37 @@ BREAKING CHANGES
     utilize a validator's operator address must now use the new Bech32 prefix,
     `cosmosvaloper`.
     * [cli] [\#2190](https://github.com/cosmos/cosmos-sdk/issues/2190) `gaiacli init --gen-txs` is now `gaiacli init --with-txs` to reduce confusion
+    * [\#1184](https://github.com/cosmos/cosmos-sdk/issues/1184) Subcommands reorganisation, a comprehensive list of renamings follow:
+      - `tendermint validator-set` -> `query tendermint-validator-set`
+      - `tendermint block` -> `query block`
+      - `account` -> `query account`
+      - `stake delegation` -> `query delegation`
+      - `stake delegations` -> `query delegations`
+      - `stake parameters` -> `query parameters`
+      - `stake pool` -> `query pool`
+      - `stake redelegation` -> `query redelegation`
+      - `stake redelegations` -> `query redelegations`
+      - `stake signing-info` -> `query signing-info`
+      - `stake unbonding-delegation` -> `query unbonding-delegation`
+      - `stake unbonding-delegations` -> `query unbonding-delegations`
+      - `stake validator` -> `query validator`
+      - `stake validators` -> `query validators`
+      - `stake create-validator` -> `tx create-validator`
+      - `stake edit-validator` -> `tx edit-validator`
+      - `stake delegate` -> `tx delegate`
+      - `stake redelegate` -> `tx redelegate`
+      - `stake unbond` -> `tx unbond`
+      - `stake unjail` -> `tx jail`
+      - `gov deposit` -> `tx deposit`
+      - `gov query-proposal` -> `query proposal`
+      - `gov query-proposals` -> `query proposals`
+      - `gov query-vote` -> `query vote`
+      - `gov query-votes` -> `query votes`
+      - `gov submit-proposal` -> `tx submit-proposal`
+      - `gov vote` -> `tx vote`
+      - `broadcast` -> `tx broadcast`
+      - `send` -> `tx send`
+      - `sign` -> `tx sign`
 
 * Gaia
     * Make the transient store key use a distinct store key. [#2013](https://github.com/cosmos/cosmos-sdk/pull/2013)
@@ -124,6 +155,7 @@ IMPROVEMENTS
     * [simulation] Logs get written to file if large, and also get printed on panics \#2285
     * [gaiad] \#1992 Add optional flag to `gaiad testnet` to make config directory of daemon (default `gaiad`) and cli (default `gaiacli`) configurable
     * [x/stake] Add stake `Queriers` for Gaia-lite endpoints. This increases the staking endpoints performance by reusing the staking `keeper` logic for queries. [#2249](https://github.com/cosmos/cosmos-sdk/pull/2149)
+    * [client] [\#1184](https://github.com/cosmos/cosmos-sdk/issues/1184) Remove unused `client/tx/sign.go`.
 
 * Tendermint
 
