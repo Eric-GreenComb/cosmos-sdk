@@ -79,10 +79,8 @@ func main() {
 	txCmd.AddCommand(
 		client.PostCommands(
 			bankcmd.GetBroadcastCommand(cdc),
+			authcmd.GetSignCommand(cdc, authcmd.GetAccountDecoder(cdc)),
 		)...)
-	txCmd.AddCommand(
-		authcmd.GetSignCommand(cdc, authcmd.GetAccountDecoder(cdc)),
-	)
 	txCmd.AddCommand(client.LineBreak)
 
 	txCmd.AddCommand(
