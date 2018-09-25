@@ -27,8 +27,8 @@ type Keeper struct {
 	// The reference to the Paramstore to get and set gov specific params
 	ps params.Store
 
-	// The reference to the CoinKeeper to modify balances
-	ck bank.Keeper
+	// The reference to the BankKeeper to modify balances
+	bk bank.Keeper
 
 	// The ValidatorSet to get information about validators
 	vs sdk.ValidatorSet
@@ -46,23 +46,24 @@ type Keeper struct {
 	codespace sdk.CodespaceType
 }
 
-// NewGovernanceMapper returns a mapper that uses go-codec to (binary) encode and decode gov types.
-func NewKeeper(cdc *codec.Codec, key sdk.StoreKey, pk params.Keeper, ps params.Store, ck bank.Keeper, ds sdk.DelegationSet, codespace sdk.CodespaceType) Keeper {
+// NewKeeper returns a governance keeper. It handles:
+// - submitting governance proposals
+// - depositing funds into proposals, and activating upon sufficient funds being deposited
+// - users voting on proposals, with weight proportional to stake in the system
+// - and tallying the result of the vote.
+func NewKeeper(cdc *codec.Codec, key sdk.StoreKey, pk params.Keeper,
+	ps params.Store, bk bank.Keeper, ds sdk.DelegationSet, codespace sdk.CodespaceType) Keeper {
+
 	return Keeper{
 		storeKey:  key,
 		pk:        pk,
 		ps:        ps,
-		ck:        ck,
+		bk:        bk,
 		ds:        ds,
 		vs:        ds.GetValidatorSet(),
 		cdc:       cdc,
 		codespace: codespace,
 	}
-}
-
-// Returns the go-codec codec.
-func (keeper Keeper) WireCodec() *codec.Codec {
-	return keeper.cdc
 }
 
 // =====================================================
@@ -116,7 +117,6 @@ func (keeper Keeper) DeleteProposal(ctx sdk.Context, proposal Proposal) {
 	store.Delete(KeyProposal(proposal.GetProposalID()))
 }
 
-// nolint: gocyclo
 // Get Proposal from store by ProposalID
 func (keeper Keeper) GetProposalsFiltered(ctx sdk.Context, voterAddr sdk.AccAddress, depositerAddr sdk.AccAddress, status ProposalStatus, numLatest int64) []Proposal {
 
@@ -348,7 +348,7 @@ func (keeper Keeper) AddDeposit(ctx sdk.Context, proposalID int64, depositerAddr
 	}
 
 	// Subtract coins from depositer's account
-	_, _, err := keeper.ck.SubtractCoins(ctx, depositerAddr, depositAmount)
+	_, _, err := keeper.bk.SubtractCoins(ctx, depositerAddr, depositAmount)
 	if err != nil {
 		return err, false
 	}
@@ -393,7 +393,7 @@ func (keeper Keeper) RefundDeposits(ctx sdk.Context, proposalID int64) {
 		deposit := &Deposit{}
 		keeper.cdc.MustUnmarshalBinary(depositsIterator.Value(), deposit)
 
-		_, _, err := keeper.ck.AddCoins(ctx, deposit.Depositer, deposit.Amount)
+		_, _, err := keeper.bk.AddCoins(ctx, deposit.Depositer, deposit.Amount)
 		if err != nil {
 			panic("should not happen")
 		}

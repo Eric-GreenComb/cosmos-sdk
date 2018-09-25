@@ -11,12 +11,12 @@ import (
 
 // keeper of the stake store
 type Keeper struct {
-	storeKey       sdk.StoreKey
-	storeTKey      sdk.StoreKey
-	cdc            *codec.Codec
-	bankKeeper     bank.Keeper
-	validatorHooks sdk.ValidatorHooks
-	paramstore     params.Store
+	storeKey   sdk.StoreKey
+	storeTKey  sdk.StoreKey
+	cdc        *codec.Codec
+	bankKeeper bank.Keeper
+	paramstore params.Store
+	hooks      sdk.ValidatorHooks
 
 	// codespace
 	codespace sdk.CodespaceType
@@ -24,23 +24,24 @@ type Keeper struct {
 
 func NewKeeper(cdc *codec.Codec, key, tkey sdk.StoreKey, ck bank.Keeper, paramstore params.Store, codespace sdk.CodespaceType) Keeper {
 	keeper := Keeper{
-		storeKey:       key,
-		storeTKey:      tkey,
-		cdc:            cdc,
-		bankKeeper:     ck,
-		paramstore:     paramstore,
-		validatorHooks: nil,
-		codespace:      codespace,
+		storeKey:   key,
+		storeTKey:  tkey,
+		cdc:        cdc,
+		bankKeeper: ck,
+		hooks:      nil,
+		paramstore: paramstore,
+		codespace:  codespace,
 	}
+
 	return keeper
 }
 
 // Set the validator hooks
-func (k Keeper) WithValidatorHooks(v sdk.ValidatorHooks) Keeper {
-	if k.validatorHooks != nil {
+func (k Keeper) WithValidatorHooks(sh sdk.ValidatorHooks) Keeper {
+	if k.hooks != nil {
 		panic("cannot set validator hooks twice")
 	}
-	k.validatorHooks = v
+	k.hooks = sh
 	return k
 }
 
